@@ -7,7 +7,7 @@ import java.util.Set;
 
 import cn.edu.bjtu.weibo.dao.ReportDAO;
 import redis.clients.jedis.Jedis;
-
+@Repository("reportDAO")
 public class ReportDAOImpl implements ReportDAO {
 
 	int XxCommentmeMessageNumber = 0;
