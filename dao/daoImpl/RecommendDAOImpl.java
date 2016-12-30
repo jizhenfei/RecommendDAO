@@ -8,7 +8,7 @@ import java.util.Set;
 
 import cn.edu.bjtu.weibo.dao.RecommendDAO;
 import redis.clients.jedis.Jedis;
-
+@Repository("recommendDAO")
 public class RecommendDAOImpl implements RecommendDAO {
 	int XxCommentmeMessageNumber = 0;
 	Jedis client;
