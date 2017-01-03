@@ -32,7 +32,7 @@ public class ReportDAOImpl implements ReportDAO {
 
 	@Override
 	public boolean ReportWeibo(String WeiboId, String reportedfromuserId) {
-		if (client.exists("Weibo:" + WeiboId + ":id") && client.exists("User:" + reportedfromuserId + ":id")) {
+		if (client.exists("Weibo:" + WeiboId + ":WeiboId") && client.exists("User:" + reportedfromuserId + ":id")) {
 			client.lpush("Report:Weibo:" + WeiboId + ":reporterid-list", reportedfromuserId);
 			return true;
 		}
