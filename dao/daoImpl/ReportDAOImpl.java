@@ -4,29 +4,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
+import org.apache.commons.pool.impl.GenericObjectPool.Config;
 import cn.edu.bjtu.weibo.dao.ReportDAO;
+import pl.quaternion.SentinelBasedJedisPoolWrapper;
 import redis.clients.jedis.Jedis;
 @Repository("reportDAO")
 public class ReportDAOImpl implements ReportDAO {
 
 	int XxCommentmeMessageNumber = 0;
-	Jedis client;
+	final Set<String> sentinels = new HashSet<String>();
+	final Config config = new Config();
+	config.testOnReturn = true;
+	config.testOnBorrow = true;
+        sentinels.add("192.168.146.129:26379");
+	SentinelBasedJedisPoolWrapper pool = new SentinelBasedJedisPoolWrapper(config, 90000, null, 0, "mymaster", sentinels);
 
-	public ReportDAOImpl(){
-		final Set<String> sentinels = new HashSet<String>();
-		final GenericObjectPoolConfig config = new GenericObjectPoolConfig();
-		config.setTestOnReturn(true);
-		config.setTestOnBorrow(true);
-
-		sentinels.add("121.42.193.80:26379");
-		sentinels.add("121.42.193.80:26378");
-		SentinelBasedJedisPoolWrapper pool = new SentinelBasedJedisPoolWrapper(config, 90000, null, 0, "mymaster", sentinels);
-
-		client = pool.getResource();
-		pool.returnResource(client);
-		pool.destroy();
-	}
+	Jedis client = pool.getResource();
 
 	@Override
 	public boolean ReportUser(String UserId, String reportedfromuserId) {
